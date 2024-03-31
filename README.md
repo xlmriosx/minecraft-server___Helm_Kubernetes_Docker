@@ -1,5 +1,6 @@
 Minecraft Server in Kubernetes 🎮
 ==============
+[![deploy-server-minecraft](https://github.com/xlmriosx/minecraft-server___Helm_Kubernetes_Docker/actions/workflows/deploy-server-minecraft.yaml/badge.svg)](https://github.com/xlmriosx/minecraft-server___Helm_Kubernetes_Docker/actions/workflows/deploy-server-minecraft.yaml)
 
 This demonstrates how to run Minecraft in Kubernetes. It builds on the work of 
 the [itzg Minecraft Server Docker Image](https://hub.docker.com/r/itzg/minecraft-server/) 
