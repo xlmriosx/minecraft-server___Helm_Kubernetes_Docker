@@ -76,7 +76,7 @@ spec:
           - name: OPS
             value: {{ .Values.minecraft.ops }}
           {{- end }}
-          {{- if eq .Values.minecraft.type_server 'VANILLA' }}
+          {{- if eq .Values.minecraft.type_server "VANILLA" }}
           - name: PROXY
             value: 'TRUE'
           {{- end }}
