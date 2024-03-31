@@ -1,0 +1,34 @@
+# Default values for minecraft.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# ********REQUIRED********
+node:
+  hostname: 'vps-3621461-x' # Your kube node's hostname
+# ************************
+
+minecraft:
+  port: 25565
+  type_server: 'BUKKIT'
+  server_name: shuhariko
+  version: '1.20.4'
+  motd: "The server's boys..." # Message of the Day
+  gamemode: 'survival'
+  seed: '''1167279063118487735''' # https://progameguides.com/minecraft/best-minecraft-1-20-1-seeds
+  icon: https://raw.githubusercontent.com/xlmriosx/minecraft-server___Helm_Kubernetes_Docker/master/assets/icon.jpg
+  # ops: 'xlmriosx'
+  # whitelist: xlmriosx
+
+volume:
+  storage: 3Gi
+  path: '/mnt/local-volumes/minecraft' # Path to wherever you want to save your worldfile
+  path_plugins: '/mnt/local-volumes/plugins'
+
+resources:
+  limits:
+    memory: 3Gi
+  requests:
+    memory: 1.5Gi
+
+serviceAccount:
+  create: true

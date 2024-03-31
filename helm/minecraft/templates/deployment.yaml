@@ -1,0 +1,109 @@
+# docker run -d -it -v /path/on/host:/data -e EULA=TRUE -p 25565:25565 --name mc itzg/minecraft-server
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft-server
+  labels:
+    app: minecraft-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft-server
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: minecraft-server
+    spec:
+      volumes:
+      - name: minecraft-data
+        persistentVolumeClaim:
+          claimName: minecraft-data-pvc
+      - name: minecraft-data-plugins
+        persistentVolumeClaim:
+          claimName: minecraft-data-plugins-pvc
+      containers:
+      - name: minecraft-server
+        image: itzg/minecraft-server:latest
+        resources:
+          limits:
+            memory: {{ .Values.resources.limits.memory }}
+          requests:
+            memory: {{ .Values.resources.requests.memory }}
+        env:
+          - name:  EULA
+            value: 'TRUE'
+          - name: ALLOW_FLIGHT
+            value: 'TRUE'
+          - name: ONLINE_MODE
+            value: 'FALSE'
+          - name: ENABLE_ROLLING_LOGS
+            value: 'TRUE'
+          - name: GUI
+            value: 'FALSE'
+            
+          - name: TYPE
+            value: {{ .Values.minecraft.type_server }}
+          - name: SERVER_NAME
+            value: {{ .Values.minecraft.server_name }}
+          - name: MODE
+            value: {{ .Values.minecraft.gamemode }}
+          - name: MOTD
+            value: {{ .Values.minecraft.motd }}
+
+          {{- if .Values.minecraft.whitelist }}
+          - name: ENABLE_WHITELIST
+            value: 'TRUE'
+          - name: OVERRIDE_WHITELIST
+            value: 'TRUE'
+          - name: WHITELIST
+            value: {{ .Values.minecraft.whitelist }}
+          {{- end }}
+          {{- if .Values.minecraft.version }}
+          - name: VERSION
+            value: {{ .Values.minecraft.version }}
+          {{- end }}
+          {{- if .Values.minecraft.seed }}
+          - name: SEED
+            value: {{ .Values.minecraft.seed }}
+          {{- end }}
+          {{- if .Values.minecraft.icon }}
+          - name: OVERRIDE_ICON
+            value: 'TRUE'
+          - name: ICON
+            value: {{ .Values.minecraft.icon }}
+          {{- end }}
+          {{- if .Values.minecraft.ops }}
+          - name: OPS
+            value: {{ .Values.minecraft.ops }}
+          {{- end }}
+          {{- if eq .Values.minecraft.type_server 'VANILLA' }}
+          - name: PROXY
+            value: 'TRUE'
+          {{- end }}
+        ports:
+        - containerPort: {{ .Values.minecraft.port }}
+          name: minecraft
+        volumeMounts:
+          - name: minecraft-data
+            mountPath: /data
+          - name: minecraft-data-plugins
+            mountPath: /plugins
+        readinessProbe:
+          exec:
+            command:
+            - mcstatus
+            - 127.0.0.1
+            - ping
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        livenessProbe:
+          exec:
+            command:
+            - mcstatus
+            - 127.0.0.1
+            - ping
+          initialDelaySeconds: 30
+          periodSeconds: 30
