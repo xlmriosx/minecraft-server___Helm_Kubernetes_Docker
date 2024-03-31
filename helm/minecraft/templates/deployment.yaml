@@ -21,9 +21,6 @@ spec:
       - name: minecraft-data
         persistentVolumeClaim:
           claimName: minecraft-data-pvc
-      - name: minecraft-data-plugins
-        persistentVolumeClaim:
-          claimName: minecraft-data-plugins-pvc
       containers:
       - name: minecraft-server
         image: itzg/minecraft-server:latest
@@ -43,7 +40,7 @@ spec:
             value: 'TRUE'
           - name: GUI
             value: 'FALSE'
-            
+
           - name: TYPE
             value: {{ .Values.minecraft.type_server }}
           - name: SERVER_NAME
@@ -89,8 +86,6 @@ spec:
         volumeMounts:
           - name: minecraft-data
             mountPath: /data
-          - name: minecraft-data-plugins
-            mountPath: /plugins
         readinessProbe:
           exec:
             command:
