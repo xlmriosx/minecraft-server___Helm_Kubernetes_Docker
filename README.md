@@ -10,7 +10,10 @@ We also use Helm to make installation, and customization, a breeze. 🌪️
 This repository demonstrates how to run in a local Kubernetes cluster using
 local disks. 
 
-![header](./assets/header.jpg)
+<!-- ![header](./assets/header.jpg) -->
+<div style="text-align: center;">
+    <img src="./assets/header.jpg" alt="Image" height="200">
+</div>
 
 How To Install 🛠️
 
@@ -69,7 +72,7 @@ Note: You may need to open the port if your host system has a firewall installed
 
 Now, apply the configuration to Kubernetes. `cd` to the project root and run:
 
-`helm install minecraft helm/minecraft --namespace minecraft --create-namespace`
+`helm upgrade --install minecraft helm/minecraft --namespace minecraft --create-namespace`
 
 
 ### Step 5: Connect 🌐
